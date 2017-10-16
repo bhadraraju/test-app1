@@ -1,0 +1,8 @@
+server:
+  address: 0.0.0.0
+  port: ${port:8082}   # HTTP (Tomcat) port
+  contextPath: ${contextPath:/test-app1}
+
+test2:
+  application:
+    endpoint: http://localhost:8083/test-app2/secondTestApp

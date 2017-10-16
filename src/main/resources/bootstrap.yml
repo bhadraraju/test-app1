@@ -1,0 +1,16 @@
+release.zone: dev
+
+spring:
+  application:
+    name: ${release.zone}-test-app1
+  config:
+    name: test-app1
+  cloud:
+    bus:
+      enabled: false
+    consul:
+      enabled: false
+    config:
+      enabled: false
+    discovery:
+      enabled: false
