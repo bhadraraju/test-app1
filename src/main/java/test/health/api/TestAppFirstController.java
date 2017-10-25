@@ -2,9 +2,11 @@ package test.health.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,18 @@ public class TestAppFirstController {
 
     protected Logger logger = LoggerFactory.getLogger(TestAppFirstController.class);
 
+    final static String queueName = "spring-boot";
+
+
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    /*@Autowired
+    private ConfigurableApplicationContext context;*/
 
     @Value("${test2.application.endpoint}")
     private String secondTestAppEndpoint;
@@ -43,6 +54,12 @@ public class TestAppFirstController {
         }
 
         //return "TestApp1 : " + responseEntity.toString();
+
+        System.out.println("Sending message...");
+        rabbitTemplate.convertAndSend(queueName, "Hello from RabbitMQ!");
+        //receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+        //context.close();
+
         return "TestApp1 : " + responseEntity.getBody().toString();
     }
 
